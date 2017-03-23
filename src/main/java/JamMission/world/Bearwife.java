@@ -18,7 +18,7 @@ public class Bearwife extends LocationObject {
         setName(name);
         setVisionRange(vision);
         setWaterVolume(volume);
-        setBottleCapacity(capacity)
+        setBottleCapacity(capacity);
     }
 
     public int getWaterVolume() {
@@ -63,8 +63,8 @@ public class Bearwife extends LocationObject {
     public void update(Bearwife br) {
         assert this.getId().equals(br.getId());
 
-        setWaterVolume(br.getWaterVolume);
-        setBottleCapacity(br.getBottleCapacity);
+        setWaterVolume(br.getWaterVolume());
+        setBottleCapacity(br.getBottleCapacity());
         setVisionRange(br.getVisionRange());
     }
 

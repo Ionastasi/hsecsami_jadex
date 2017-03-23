@@ -17,7 +17,7 @@ public class Environment implements IEnvironment {
     protected List bears;
     protected List bearwifes;
     protected List lairs;
-    protected List bushes
+    protected List bushes;
     protected River river;
 
     public Environment() {
@@ -32,11 +32,11 @@ public class Environment implements IEnvironment {
 
         // Add some things to our world.
         addLair(new Lair(new Location(0.1, 0.1)));
-        addBush(new Bash(new Location(0.1, 0.5), 10));
-        addBush(new Bash(new Location(0.1, 0.6), 20));
-        addBush(new Bash(new Location(0.7, 0.1), 5));
-        addBush(new Bash(new Location(0.9, 0.9), 15));
-        addBush(new Bash(new Location(0.6, 0.8), 12));
+        addBush(new Bush(new Location(0.1, 0.5), 10));
+        addBush(new Bush(new Location(0.1, 0.6), 20));
+        addBush(new Bush(new Location(0.7, 0.1), 5));
+        addBush(new Bush(new Location(0.9, 0.9), 15));
+        addBush(new Bush(new Location(0.6, 0.8), 12));
     }
 
     public static synchronized Environment getInstance() {
@@ -51,15 +51,20 @@ public class Environment implements IEnvironment {
     }
 
     public synchronized Vision getVision(LocationObject o) {
+        Location loc;
+        double range;
+        // beacuse compiler is stupid
         if (o instanceof Bear) {
             Bear br = (Bear)o;
+            loc = br.getLocation();
+            range = br.getVisionRange();
         } else if (o instanceof Bearwife) {
             Bearwife br = (Bearwife)o;
+            loc = br.getLocation();
+            range = br.getVisionRange();
         } else {
             return null;
         }
-        Location loc = br.getLocation();
-        double range = br.getVisionRange();
 
         ArrayList nearbears = new ArrayList();
         for(int i=0; i<bears.size(); i++) {
@@ -88,9 +93,9 @@ public class Environment implements IEnvironment {
             if(obj.getLocation().isNear(loc, range))
                 nearbushes.add(obj.clone());
         }
-        River nearriver = null
-        if river.getLocation().isNear(loc, range) {
-            nearriver = river.clone();
+        River nearriver = null;
+        if (river.getLocation().isNear(loc, range)) {
+            nearriver = (River) river.clone();
         }
         Vision v = new Vision(nearbearwifes, nearbears, nearlairs,
                               nearbushes, nearriver, getDaytime());
@@ -112,7 +117,7 @@ public class Environment implements IEnvironment {
             bear.setRaspberryVolume(have + raspberry);
             bush.setRaspberryAmount(0);
         } else {
-            bear.setRaspberryAmount(lim);
+            bear.setRaspberryVolume(lim);
             bush.setRaspberryAmount(raspberry - (lim - have));
         }
         return true;
@@ -124,7 +129,7 @@ public class Environment implements IEnvironment {
         if (bear == null || lairs == null) {
             return false;
         }
-        lair.increaceRaspberryVolume(bear.getRaspberryVolume());
+        lair.increaseRaspberryVolume(bear.getRaspberryVolume());
         bear.setRaspberryVolume(0);
         return true;
     }
@@ -136,7 +141,7 @@ public class Environment implements IEnvironment {
             return false;
         }
         bearwife.setWaterVolume(bearwife.getBottleCapacity());
-        return True;
+        return true;
     }
 
     public boolean pourWater(Bearwife bearwife, Lair lair) {
@@ -145,7 +150,7 @@ public class Environment implements IEnvironment {
         if (bearwife == null || lair == null) {
             return false;
         }
-        lair.increaceWaterVolume(bearwife.getWaterVolume());
+        lair.increaseWaterVolume(bearwife.getWaterVolume());
         bearwife.setWaterVolume(0);
         return true;
     }
@@ -153,19 +158,19 @@ public class Environment implements IEnvironment {
     public boolean makeJam(Lair lair) {
         //some kind of timer?
         lair = getLair(lair);
-        if (lair == null || !lair.getWaterVolume() || !lair.getRaspberryVolume()) {
+        if (lair == null || lair.getWaterVolume() == 0 || lair.getRaspberryVolume() == 0) {
             return false;
         }
         int raspberry = lair.getRaspberryVolume();
         int water = lair.getWaterVolume();
         if (raspberry >= 2 * water) {
-            lair.increaceJamVolume(water);
+            lair.increaseJamVolume(water);
             lair.setWaterVolume(0);
-            lair.increaceRaspberryVolume(-1 * 2 * water);
+            lair.increaseRaspberryVolume(-1 * 2 * water);
         } else {
-            lair.increaceJamVolume(jam / 2);
-            lair.setRaspberryVolume(jam % 2);
-            lair.increaceWaterVolume(-1 * jam / 2);
+            lair.increaseJamVolume(raspberry / 2);
+            lair.setRaspberryVolume(raspberry % 2);
+            lair.increaseWaterVolume(-1 * raspberry / 2);
         }
         return true;
     }
@@ -254,12 +259,8 @@ public class Environment implements IEnvironment {
     }
 
     public synchronized void removeBush(Bush bush) {
-        bushe.remove(bush);
+        bushes.remove(bush);
         this.pcs.firePropertyChange("bushes", null, bush);
-    }
-
-    public synchronized Waste[] getWastes() {
-        return (Waste[])wastes.toArray(new Waste[wastes.size()]);
     }
 
     public synchronized Bear[] getBears() {

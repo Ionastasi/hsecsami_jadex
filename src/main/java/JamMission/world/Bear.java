@@ -13,13 +13,13 @@ public class Bear extends LocationObject {
 
     public Bear() {}
 
-    public Bear(Location location, String name, int raspberry, int capacity, List bushes, double vision) {
+    public Bear(Location location, String name, int raspberry, int capacity, Bush[] bushes, double vision) {
         setLocation(location);
         setId(name);
         setName(name);
         setVisionRange(vision);
         setRaspberryVolume(raspberry);
-        setBasketCapacity(capacity)
+        setBasketCapacity(capacity);
         setSeenBushes(bushes);
     }
 
@@ -53,7 +53,7 @@ public class Bear extends LocationObject {
 
 
     public Bush[] getSeenBushes() {
-        return (Bush[])seenbushes.toArray(new Bish[seenbushes.size()]);
+        return (Bush[])seenbushes.toArray(new Bush[seenbushes.size()]);
     }
     public Bush getSeenBush(int idx) {
         return (Bush)this.seenbushes.get(idx);
@@ -63,7 +63,7 @@ public class Bear extends LocationObject {
         for(int i = 0; i < bushes.length; i++) {
             this.seenbushes.add(bushes[i]);
         }
-        pcs.firePropertyChange("seenbushes", null, seenbushes;
+        pcs.firePropertyChange("seenbushes", null, seenbushes);
     }
     public void setSeenBush(int idx, Bush bush) {
         this.seenbushes.set(idx, bush);
@@ -93,9 +93,9 @@ public class Bear extends LocationObject {
     public void update(Bear br) {
         assert this.getId().equals(br.getId());
 
-        setSeenBushes(br.getSeenBushes);
-        setRaspberryVolume(br.getRaspberryVolume);
-        setBasketCapacity(br.getBasketCapacity);
+        setSeenBushes(br.getSeenBushes());
+        setRaspberryVolume(br.getRaspberryVolume());
+        setBasketCapacity(br.getBasketCapacity());
         setVisionRange(br.getVisionRange());
     }
 

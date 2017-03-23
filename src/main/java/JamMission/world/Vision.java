@@ -102,9 +102,9 @@ public class Vision extends LocationObject {
         return (Bush)this.bushes.get(idx);
     }
     public void setBushes(Bush[] bushes) {
-        this.lairs.clear();
-        for(int i = 0; i < lairs.length; i++)
-            this.lairs.add(lairs[i]);
+        this.bushes.clear();
+        for(int i = 0; i < bushes.length; i++)
+            this.bushes.add(bushes[i]);
     }
     public void setBush(int idx, Bush bush) {
         this.bushes.set(idx, bush);
@@ -142,7 +142,7 @@ public class Vision extends LocationObject {
         clone.bears = (ArrayList)((ArrayList)this.bears).clone();
         clone.lairs = (ArrayList)((ArrayList)this.lairs).clone();
         clone.bushes = (ArrayList)((ArrayList)this.bushes).clone();
-        clone.river = this.river.clone();
+        clone.river = (River) this.river.clone();
         return clone;
     }
 }

@@ -12,7 +12,7 @@ public class Lair extends LocationObject {
     protected String name;
 
     protected static synchronized int getNumber() {
-        return ++bushcnt;
+        return ++laircnt;
     }
 
     public Lair() {}
@@ -55,7 +55,7 @@ public class Lair extends LocationObject {
     public void increaseRaspberryVolume(int volume) {
         int old = raspberryvolume;
         raspberryvolume += volume;
-        pcs.firePropertyChange("raspberryvolume", old, raspberryrvolume);
+        pcs.firePropertyChange("raspberryvolume", old, raspberryvolume);
     }
 
     public int getJamVolume() {
@@ -67,7 +67,7 @@ public class Lair extends LocationObject {
         pcs.firePropertyChange("jamvolume", old, jamvolume);
     }
     public void increaseJamVolume(int volume) {
-        int old = jamrvolume;
+        int old = jamvolume;
         jamvolume += volume;
         pcs.firePropertyChange("jamvolume", old, jamvolume);
     }
@@ -84,9 +84,9 @@ public class Lair extends LocationObject {
     public void update(Lair lr) {
         assert this.getId().equals(lr.getId());
 
-        setWaterVolume(lr.getWaterVolume);
-        setRaspberryVolume(lr.getRaspberryVolume);
-        setJamVolume(lr.getJamVolume);
+        setWaterVolume(lr.getWaterVolume());
+        setRaspberryVolume(lr.getRaspberryVolume());
+        setJamVolume(lr.getJamVolume());
         }
 
     public String toString() {
