@@ -104,7 +104,23 @@ public class Environment implements IEnvironment {
     }
 
     //-------- Bear actions --------
-    public boolean harvestRaspberry(Bear bear, Bush bush) {
+    public int harvestRaspberry(Bush bush, int have, int lim) {
+        bush = getBush(bush);
+        if (bush == null) {
+            return -1;
+        }
+        int raspberry = bush.getRaspberryAmount();
+        int res = 0;
+        if (raspberry < lim - have) {
+            res = have + raspberry;
+            bush.setRaspberryAmount(0);
+        } else {
+            res = lim;
+            bush.setRaspberryAmount(raspberry - (lim - have));
+        }
+        return res;
+    }
+    /*public boolean harvestRaspberry(Bear bear, Bush bush) {
         bear = getBear(bear);
         bush = getBush(bush);
         if (bear == null || bush == null) {
@@ -121,9 +137,18 @@ public class Environment implements IEnvironment {
             bush.setRaspberryAmount(raspberry - (lim - have));
         }
         return true;
+    }*/
+
+    public boolean giveAwayRaspberry(Lair lair, int rasp) {
+        lair = getLair(lair);
+        if (lairs == null) {
+            return false;
+        }
+        lair.increaseRaspberryVolume(rasp);
+        return true;
     }
 
-    public boolean giveAwayRaspberry(Bear bear, Lair lair) {
+    /*public boolean giveAwayRaspberry(Bear bear, Lair lair) {
         bear = getBear(bear);
         lair = getLair(lair);
         if (bear == null || lairs == null) {
@@ -132,7 +157,7 @@ public class Environment implements IEnvironment {
         lair.increaseRaspberryVolume(bear.getRaspberryVolume());
         bear.setRaspberryVolume(0);
         return true;
-    }
+    }*/
 
     //-------- Bearwife actions --------
     public boolean getWater(Bearwife bearwife) {
